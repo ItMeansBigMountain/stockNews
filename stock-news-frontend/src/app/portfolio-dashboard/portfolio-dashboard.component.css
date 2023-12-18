@@ -1,0 +1,71 @@
+.dashboard-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f2f2f2;
+}
+
+h2 {
+    text-align: center;
+}
+
+.timeframe-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.timeframe {
+    flex-basis: 48%;
+}
+
+
+.investment-list h3 {
+    margin-bottom: 10px;
+}
+
+.investment-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.investment-item .ticker {
+    font-weight: bold;
+}
+
+.investment-item .sentiment {
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.bullish {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.bearish {
+    background-color: #f44336;
+    color: white;
+}
+
+.run-analysis-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #008CBA;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.run-analysis-btn:hover {
+    background-color: #007ba7;
+}

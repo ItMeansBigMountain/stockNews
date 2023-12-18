@@ -1,0 +1,45 @@
+<div class="dashboard-container">
+    <h2>Portfolio Dashboard</h2>
+
+    <!-- TIMEFRAME SELECTOR -->
+    <div class="timeframe-selector">
+        <div class="timeframe">
+            <label for="timeframeFrom">From:</label>
+            <input type="date" id="timeframeFrom" name="timeframeFrom" [value]="fromDate">
+        </div>
+        <div class="timeframe">
+            <label for="timeframeTo">To:</label>
+            <input type="date" id="timeframeTo" name="timeframeTo" [value]="toDate">
+        </div>
+    </div>
+
+
+    <!-- ADD INVESTMENT BUTTON  -->
+    <div class="add-investment">
+        <input type="text" placeholder="Ticker Symbol" [(ngModel)]="newInvestmentSymbol">
+        <input type="number" placeholder="Amount Invested" [(ngModel)]="newInvestmentAmount">
+        <button (click)="addInvestment()">Add Investment</button>
+    </div>
+
+
+
+    <div class="investment-list">
+        <h3>Your Investments</h3>
+        <ul>
+            <!-- Dynamically generate list items -->
+            <li class="investment-item" *ngFor="let investment of investments">
+                <button *ngIf="!investment.editing" (click)="enableEditing(investment)">Edit</button>
+                <button *ngIf="investment.editing" (click)="deleteEditing(investment, i)">Delete</button>
+                <button *ngIf="investment.editing" (click)="saveEditing(investment, i)">Save</button>
+                <button *ngIf="investment.editing" (click)="cancelEditing(investment)">Cancel</button>
+                <span class="ticker">{{ investment.symbol }}</span>
+                <span class="amount">${{ investment.amount }}</span>
+                <span *ngIf="!investment.editing" class="amount">${{ investment.amount }}</span>
+                <span class="sentiment">TBD</span>
+            </li>
+        </ul>
+    </div>
+
+
+    <button class="run-analysis-btn">Run Analysis</button>
+</div>
