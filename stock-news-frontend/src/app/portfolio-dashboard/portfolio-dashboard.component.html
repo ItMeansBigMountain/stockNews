@@ -27,16 +27,22 @@
         <h3>Your Investments</h3>
         <ul>
             <!-- Dynamically generate list items -->
-            <li class="investment-item" *ngFor="let investment of investments">
+            <li class="investment-item" *ngFor="let investment of investments; let i = index">
                 <button *ngIf="!investment.editing" (click)="enableEditing(investment)">Edit</button>
-                <button *ngIf="investment.editing" (click)="deleteEditing(investment, i)">Delete</button>
+                <button *ngIf="investment.editing" (click)="deleteEditing(i)">Delete</button>
                 <button *ngIf="investment.editing" (click)="saveEditing(investment, i)">Save</button>
                 <button *ngIf="investment.editing" (click)="cancelEditing(investment)">Cancel</button>
                 <span class="ticker">{{ investment.symbol }}</span>
-                <span class="amount">${{ investment.amount }}</span>
+
+                <!-- editable only in edit mode -->
+                <input *ngIf="investment.editing" type="number" [(ngModel)]="investment.amount">
                 <span *ngIf="!investment.editing" class="amount">${{ investment.amount }}</span>
+
                 <span class="sentiment">TBD</span>
             </li>
+
+
+
         </ul>
     </div>
 

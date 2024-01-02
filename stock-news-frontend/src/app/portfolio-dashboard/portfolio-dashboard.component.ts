@@ -1,11 +1,11 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-portfolio-dashboard',
   standalone: true,
-  imports: [FormsModule, NgFor, NgIf], 
+  imports: [FormsModule, NgFor, NgIf],
   templateUrl: './portfolio-dashboard.component.html',
   styleUrls: ['./portfolio-dashboard.component.css']
 })
@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 
 
 export class PortfolioDashboardComponent implements OnInit {
+
   // TIMEFRAME
   fromDate!: string;
   toDate!: string;
@@ -21,12 +22,13 @@ export class PortfolioDashboardComponent implements OnInit {
   // ADDING INVESTMENTS
   newInvestmentSymbol: string = '';
   newInvestmentAmount: number = 0;
-  investments: any[] = []; 
+  investments: any[] = [];
 
   // EDITING INVESTMENTS
   // ...
 
   // __INIT__
+  constructor(private cdr: ChangeDetectorRef) { }
   ngOnInit(): void {
     const currentDate = new Date();
     const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -42,7 +44,7 @@ export class PortfolioDashboardComponent implements OnInit {
       amount: this.newInvestmentAmount,
       // Add other necessary investment details
     };
-    
+
     this.investments.push(newInvestment);
 
     // Reset input fields
@@ -50,25 +52,23 @@ export class PortfolioDashboardComponent implements OnInit {
     this.newInvestmentAmount = 0;
 
     // UPDATE BACKEND WITH UPDATED INVESTMENT LIST
-    
+
   }
 
 
   enableEditing(investment: any): void {
     investment.editing = true;
   }
+  
+    deleteEditing(index: number): void {
+      this.investments.splice(index, 1);
+      this.cdr.detectChanges(); // Trigger change detection
+      // Optionally, update the backend
+    }
 
   saveEditing(investment: any, index: number): void {
     investment.editing = false;
-    this.investments[index] = {...investment};
-    // Optionally, update the backend with the edited investment
-  }
-
-  deleteEditing(investment: any, index: number): void {
-    investment.editing = false;
-    let pos = this.investments.indexOf(index);
-    let elementsToRemove = 1;
-    this.investments = this.investments.splice(index, elementsToRemove);
+    this.investments[index] = { ...investment };
     // Optionally, update the backend with the edited investment
   }
 
