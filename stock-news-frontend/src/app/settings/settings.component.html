@@ -1,1 +1,28 @@
-<p>settings works!</p>
+<div class="settings-container">
+    <h2>Settings</h2>
+
+    <form>
+        <!-- News Source Selection -->
+        <div class="news-source-selection">
+            <h3>Select News Sources for Analysis</h3>
+            <div class="checkbox-group">
+                <!-- Replace these with actual news sources -->
+                <div>
+                    <input type="checkbox" id="newsSource1" name="newsSource1">
+                    <label for="newsSource1">News Source 1</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="newsSource2" name="newsSource2">
+                    <label for="newsSource2">News Source 2</label>
+                </div>
+                <!-- Add more news sources as needed -->
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <button type="submit" class="save-settings-btn">Save Settings</button>
+    </form>
+
+    <!-- Back Button to Portfolio Dashboard -->
+    <button class="back-btn" (click)="goBackToDashboard()">Back to Dashboard</button>
+</div>

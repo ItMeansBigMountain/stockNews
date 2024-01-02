@@ -69,3 +69,27 @@ h2 {
 .run-analysis-btn:hover {
     background-color: #007ba7;
 }
+
+.settings-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    float:right;
+}
+
+.settings-btn:hover {
+    background-color: #45a049; /* Darker shade for hover effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.settings-btn:active {
+    background-color: #3e8e41; /* Even darker for click effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

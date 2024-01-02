@@ -1,4 +1,7 @@
 <div class="dashboard-container">
+    <!-- SETTINGS BUTTON -->
+    <button class="settings-btn" (click)="goToSettings()">Settings</button>
+    
     <h2>Portfolio Dashboard</h2>
 
     <!-- TIMEFRAME SELECTOR -->
@@ -12,7 +15,6 @@
             <input type="date" id="timeframeTo" name="timeframeTo" [value]="toDate">
         </div>
     </div>
-
 
     <!-- ADD INVESTMENT BUTTON  -->
     <div class="add-investment">

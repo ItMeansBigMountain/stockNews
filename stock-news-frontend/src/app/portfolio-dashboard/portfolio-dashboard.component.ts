@@ -1,6 +1,8 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-portfolio-dashboard',
@@ -28,7 +30,7 @@ export class PortfolioDashboardComponent implements OnInit {
   // ...
 
   // __INIT__
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef, private router: Router) { }
   ngOnInit(): void {
     const currentDate = new Date();
     const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -77,5 +79,8 @@ export class PortfolioDashboardComponent implements OnInit {
     // Reset the investment if necessary or reload from backend
   }
 
+  goToSettings(): void {
+    this.router.navigate(['/settings']);
+  }
 
 }

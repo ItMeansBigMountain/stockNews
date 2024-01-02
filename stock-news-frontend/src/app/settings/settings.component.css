@@ -1,0 +1,31 @@
+.settings-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+.news-source-selection {
+    margin-bottom: 20px;
+}
+
+.checkbox-group div {
+    margin-bottom: 10px;
+}
+
+.save-settings-btn,
+.back-btn {
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.back-btn {
+    background-color: #f44336;
+    /* Different color for the back button */
+}
+
+/* Add more styles as needed */
