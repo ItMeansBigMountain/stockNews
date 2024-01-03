@@ -21,6 +21,6 @@ export class SettingsComponent {
   }
 
   goBackToDashboard() {
-    this.router.navigate(['/dashboard']); // Adjust the route as necessary
+    this.router.navigate(['/dashboard']); 
   }
 }
