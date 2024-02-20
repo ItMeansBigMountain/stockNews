@@ -1,65 +1,52 @@
 import { Component } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { AuthService } from '../auth.service';  
+import { HttpClientModule } from '@angular/common/http';
+
+
 
 @Component({
-  selector: 'app-login-signup',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, NgFor, NgIf, HttpClientModule],
+  selector: 'app-login-signup',
   templateUrl: './login-signup.component.html',
-  styleUrl: './login-signup.component.css'
+  styleUrls: ['./login-signup.component.css']
 })
 export class LoginSignupComponent {
+  isLoginMode = true;
 
+  // Inject AuthService here
+  constructor(private authService: AuthService) {}
+
+  toggleMode(event: Event) {
+    event.preventDefault();  // Prevent default anchor behavior
+    this.isLoginMode = !this.isLoginMode;
+  }
+
+  login() {
+    // Implement login logic here
+  }
+
+  signup(form: NgForm) {
+    if (form.invalid) {
+      return; // Basic validation check
+    }
+    const userData = {
+      username: form.value.username,
+      email: form.value.email,
+      password: form.value.password,
+      confirmPassword: form.value.confirmPassword
+    };
+    this.authService.signup(userData).subscribe({
+      next: (response) => {
+        console.log('Signup successful', response);
+        // Handle successful signup, e.g., redirecting the user
+      },
+      error: (error) => {
+        console.error('Signup failed', error);
+        // Handle signup error, e.g., displaying an error message
+      }
+    });
+  }
 }
-
-
-
-
-
-// import { Component } from '@angular/core';
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { AuthService } from '../services/auth.service'; // Assuming you have an AuthService
-
-// @Component({
-//   selector: 'app-login-signup',
-//   templateUrl: './login-signup.component.html',
-//   styleUrls: ['./login-signup.component.css']
-// })
-// export class LoginSignupComponent {
-//   loginForm: FormGroup;
-//   isLoading = false; // To handle loading state
-
-//   constructor(private formBuilder: FormBuilder, private authService: AuthService) {
-//     this.loginForm = this.formBuilder.group({
-//       email: ['', [Validators.required, Validators.email]],
-//       password: ['', [Validators.required]]
-//     });
-//   }
-
-//   // Getter for easy access to form fields
-//   get f() { return this.loginForm.controls; }
-
-//   onSubmit() {
-//     if (this.loginForm.invalid) {
-//       return;
-//     }
-
-//     this.isLoading = true;
-//     const loginData = {
-//       email: this.f.email.value,
-//       password: this.f.password.value
-//     };
-
-//     this.authService.login(loginData).subscribe(
-//       data => {
-//         console.log('Login successful', data);
-//         this.isLoading = false;
-//         // Navigate to dashboard or other actions
-//       },
-//       error => {
-//         console.error('Login failed', error);
-//         this.isLoading = false;
-//         // Handle error
-//       }
-//     );
-//   }
-// }
