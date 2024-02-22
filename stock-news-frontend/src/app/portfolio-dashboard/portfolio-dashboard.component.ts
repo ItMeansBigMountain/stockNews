@@ -1,13 +1,13 @@
-import { NgFor, NgIf } from '@angular/common';
+// import { NgFor, NgIf } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-portfolio-dashboard',
-  standalone: true,
-  imports: [FormsModule, NgFor, NgIf],
+  standalone: false,
+  // imports: [FormsModule, NgFor, NgIf],
   templateUrl: './portfolio-dashboard.component.html',
   styleUrls: ['./portfolio-dashboard.component.css']
 })

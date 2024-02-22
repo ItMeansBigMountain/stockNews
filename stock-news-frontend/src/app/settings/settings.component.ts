@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
-  standalone: true,
-  imports: [],
+  standalone: false,
+  // imports: [],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })

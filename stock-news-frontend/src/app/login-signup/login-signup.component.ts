@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';  
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, NgForm } from '@angular/forms';
+
+// import { NgFor, NgIf } from '@angular/common';
+// import { HttpClientModule } from '@angular/common/http';
 
 
 
 @Component({
-  standalone: true,
-  imports: [FormsModule, NgFor, NgIf, HttpClientModule],
+  standalone: false,
+  // imports: [FormsModule, NgFor, NgIf, HttpClientModule],
+  // providers: [],
   selector: 'app-login-signup',
   templateUrl: './login-signup.component.html',
-  styleUrls: ['./login-signup.component.css']
+  styleUrls: ['./login-signup.component.css'],
 })
 export class LoginSignupComponent {
   isLoginMode = true;
@@ -29,15 +31,21 @@ export class LoginSignupComponent {
   }
 
   signup(form: NgForm) {
+
+    // Basic validation check
     if (form.invalid) {
-      return; // Basic validation check
+      return; 
     }
+
+    // USER DATA
     const userData = {
       username: form.value.username,
       email: form.value.email,
       password: form.value.password,
       confirmPassword: form.value.confirmPassword
     };
+
+    // CALL SIGNUP API CALL FUNCTION 
     this.authService.signup(userData).subscribe({
       next: (response) => {
         console.log('Signup successful', response);
