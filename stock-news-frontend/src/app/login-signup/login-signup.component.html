@@ -1,26 +1,40 @@
 <div class="login-container">
     <h2>{{ isLoginMode ? 'Login to Your Account' : 'Sign Up' }}</h2>
-    <form (ngSubmit)="isLoginMode ? login() : signup(f)" #f="ngForm">
+    <form (ngSubmit)="isLoginMode ? login(f) : signup(f)" #f="ngForm">
         <div class="form-group" *ngIf="!isLoginMode">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username">
+            <input type="text" id="username" name="username" ngModel required #usernameModel="ngModel">
+            <div *ngIf="f.submitted && usernameModel.invalid" class="invalid-feedback">
+                Username is required.
+            </div>
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" ngModel required #emailModel="ngModel">
+            <div *ngIf="f.submitted && emailModel.invalid" class="invalid-feedback">
+                Email is required.
+            </div>
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" ngModel required #passwordModel="ngModel">
+            <div *ngIf="f.submitted && passwordModel.invalid" class="invalid-feedback">
+                Password is required.
+            </div>
         </div>
         <div class="form-group" *ngIf="!isLoginMode">
             <label for="confirmPassword">Confirm Password:</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <input type="password" id="confirmPassword" name="confirmPassword" required [(ngModel)]="confirmPassword" ngModel #confirmPasswordModel="ngModel">
+            <div *ngIf="f.submitted && confirmPasswordModel.invalid" class="invalid-feedback">
+                Confirm Password is required.
+            </div>
+            <!-- <div *ngIf="f.submitted && confirmPassword !== password" class="invalid-feedback">
+                Passwords do not match.
+            </div> -->
         </div>
         <button type="submit">{{ isLoginMode ? 'Login' : 'Sign Up' }}</button>
-        <p class="signup-link" *ngIf="isLoginMode">Don't have an account? <a href="#" (click)="toggleMode($event)">Sign
-                Up</a></p>
-        <p class="signup-link" *ngIf="!isLoginMode">Already have an account? <a href="#"
-                (click)="toggleMode($event)">Login</a></p>
+        
+        <p class="signup-link" *ngIf="isLoginMode">Don't have an account? <a href="#" (click)="toggleMode($event)">Sign Up</a></p>
+        <p class="signup-link" *ngIf="!isLoginMode">Already have an account? <a href="#" (click)="toggleMode($event)">Login</a></p>
     </form>
 </div>

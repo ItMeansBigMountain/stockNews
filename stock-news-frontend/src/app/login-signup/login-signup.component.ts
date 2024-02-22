@@ -1,51 +1,48 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';  
-import { FormsModule, NgForm } from '@angular/forms';
-
-// import { NgFor, NgIf } from '@angular/common';
-// import { HttpClientModule } from '@angular/common/http';
-
-
+import { NgForm } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 @Component({
-  standalone: false,
-  // imports: [FormsModule, NgFor, NgIf, HttpClientModule],
-  // providers: [],
   selector: 'app-login-signup',
   templateUrl: './login-signup.component.html',
   styleUrls: ['./login-signup.component.css'],
 })
 export class LoginSignupComponent {
   isLoginMode = true;
+  password: string = '';
+  confirmPassword: string = '';
 
-  // Inject AuthService here
   constructor(private authService: AuthService) {}
 
-  toggleMode(event: Event) {
-    event.preventDefault();  // Prevent default anchor behavior
+  toggleMode(event: Event): void {
+    event.preventDefault();
     this.isLoginMode = !this.isLoginMode;
   }
 
-  login() {
-    // Implement login logic here
+  login(form: NgForm): void {
+    if (form.invalid) {
+      return;
+    }
+    // Implement login logic using AuthService
+    // Example: this.authService.login(form.value.email, form.value.password);
   }
 
-  signup(form: NgForm) {
-
-    // Basic validation check
-    if (form.invalid) {
-      return; 
+  signup(form: NgForm): void {
+    if (form.invalid || form.value.password !== form.value.confirmPassword) {
+      console.log(form.invalid)
+      console.log(form.value.password)
+      console.log(form.value.confirmPassword)
+      console.log(form.value)
+      console.log("invalid form")
+      return; // Add error handling for unmatched passwords
     }
 
-    // USER DATA
     const userData = {
       username: form.value.username,
       email: form.value.email,
-      password: form.value.password,
-      confirmPassword: form.value.confirmPassword
+      password: this.password,
     };
 
-    // CALL SIGNUP API CALL FUNCTION 
     this.authService.signup(userData).subscribe({
       next: (response) => {
         console.log('Signup successful', response);

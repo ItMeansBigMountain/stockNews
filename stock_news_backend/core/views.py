@@ -29,6 +29,7 @@ class CreateUserView(APIView):
         data['password'] = make_password(request.data.get('password'))  
         
         serializer = UserSerializer(data=data)
+        print(serializer.get_fields())
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

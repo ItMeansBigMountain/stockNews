@@ -12,6 +12,6 @@ export class AuthService {
   private apiUrl = 'http://localhost:8000'; // Change this to your API's URL
 
   signup(userData: any) {
-    return this.http.post(`${this.apiUrl}/signup/`, userData);
+    return this.http.post(`${this.apiUrl}/api/signup/`, userData);
   }
 }

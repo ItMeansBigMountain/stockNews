@@ -7,12 +7,12 @@ import { routes } from './app.routes';
 import { LoginSignupComponent } from './login-signup/login-signup.component';
 import { PortfolioDashboardComponent } from './portfolio-dashboard/portfolio-dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
-import { NgFor, NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -25,7 +25,9 @@ import { FormsModule } from '@angular/forms';
         // RouterOutlet
     ],
     imports: [
-        FormsModule, NgFor, NgIf,
+        NgFor,
+        NgIf,
+        FormsModule,
         BrowserModule,
         HttpClientModule,
         RouterModule.forRoot(routes)
