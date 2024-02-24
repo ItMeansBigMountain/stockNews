@@ -6,19 +6,16 @@ from .models import CustomUser, Stock, NewsSource
 from .serializers import UserSerializer, StockSerializer, NewsSourceSerializer
 
 
-# ViewSet for Stocks
 class StockViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
 
-# ViewSet for News Sources
 class NewsSourceViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  
     queryset = NewsSource.objects.all()
     serializer_class = NewsSourceSerializer
 
-# API View for creating a new user
 class CreateUserView(APIView):
     permission_classes = [AllowAny]
 
@@ -29,3 +26,12 @@ class CreateUserView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Serialize the user information
+        serializer = UserSerializer(request.user)
+        # Return the serialized user data
+        return Response(serializer.data)

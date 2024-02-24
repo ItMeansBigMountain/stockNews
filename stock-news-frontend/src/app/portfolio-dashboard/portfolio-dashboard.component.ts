@@ -1,42 +1,62 @@
-// import { NgFor, NgIf } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-portfolio-dashboard',
-  standalone: false,
-  // imports: [FormsModule, NgFor, NgIf],
   templateUrl: './portfolio-dashboard.component.html',
   styleUrls: ['./portfolio-dashboard.component.css']
 })
-
-
-
-
 export class PortfolioDashboardComponent implements OnInit {
 
-  // TIMEFRAME
+  userData: any;
   fromDate!: string;
   toDate!: string;
-
-  // ADDING INVESTMENTS
   newInvestmentSymbol: string = '';
   newInvestmentAmount: number = 0;
   investments: any[] = [];
 
-  // EDITING INVESTMENTS
-  // ...
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
-  // __INIT__
-  constructor(private cdr: ChangeDetectorRef, private router: Router) { }
   ngOnInit(): void {
+    this.checkUserToken();
+    this.initializeDateRange();
+  }
+
+  private checkUserToken(): void {
+    const token = this.authService.getToken();
+    if (token) {
+      this.authService.getUserData().subscribe({
+        next: (data) => {
+          this.userData = data;
+          this.cdr.detectChanges(); // Update view with user data
+        },
+        error: (error) => {
+          console.error('Error fetching user data:', error);
+          this.authService.removeToken(); // Remove invalid token
+          this.router.navigate(['/login']); // Redirect to login if token validation fails
+        }
+      });
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+
+  private initializeDateRange(): void {
     const currentDate = new Date();
     const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-
     this.toDate = currentDate.toISOString().split('T')[0];
     this.fromDate = oneWeekAgo.toISOString().split('T')[0];
+  }
+
+
+  logout(): void {
+    this.authService.removeToken(); // Remove the token from storage
+    this.router.navigate(['/login']); // Navigate back to the login page
   }
 
 
@@ -58,15 +78,20 @@ export class PortfolioDashboardComponent implements OnInit {
   }
 
 
+
+
+
+
+  // EDITING
   enableEditing(investment: any): void {
     investment.editing = true;
   }
-  
-    deleteEditing(index: number): void {
-      this.investments.splice(index, 1);
-      this.cdr.detectChanges(); // Trigger change detection
-      // Optionally, update the backend
-    }
+
+  deleteEditing(index: number): void {
+    this.investments.splice(index, 1);
+    this.cdr.detectChanges(); // Trigger change detection
+    // Optionally, update the backend
+  }
 
   saveEditing(investment: any, index: number): void {
     investment.editing = false;

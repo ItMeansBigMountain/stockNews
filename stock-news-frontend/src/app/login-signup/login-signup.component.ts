@@ -25,10 +25,9 @@ export class LoginSignupComponent {
       return;
     }
     this.authService.login(form.value.username, form.value.password).subscribe({
-      next: (response) => {
-        // RESPONSE SHOULD CONTAIN AUTH TOKEN
+      next: (response: any) => {
         console.log('Login successful', response);
-        // Redirect to dashboard
+        this.authService.saveToken(response.access);
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
@@ -36,6 +35,7 @@ export class LoginSignupComponent {
       }
     });
   }
+
 
   signup(form: NgForm): void {
     if (form.invalid) {
@@ -48,17 +48,8 @@ export class LoginSignupComponent {
     };
     this.authService.signup(userData).subscribe({
       next: (signup_response) => {
-        this.authService.login(userData.username, userData.password).subscribe({
-          next: (login_response) => {
-            // RESPONSE SHOULD CONTAIN AUTH TOKEN
-            console.log('Login successful', login_response);
-            // Redirect to dashboard
-            this.router.navigate(['/dashboard']);
-          },
-          error: (error) => {
-            console.error('Login failed', error);
-          }
-        });
+        // FETCH AUTH TOKENS AFTER SIGNUP
+        this.login(form)
       },
       error: (error) => {
         console.error('Signup failed', error);
