@@ -40,7 +40,6 @@ export class PortfolioDashboardComponent implements OnInit {
           this.cdr.detectChanges(); // Update view with user data
         },
         error: (error) => {
-          console.error('Error fetching user data:', error);
           this.authService.removeToken(); // Remove invalid token
           this.router.navigate(['/login']); // Redirect to login if token validation fails
         }
@@ -60,13 +59,10 @@ export class PortfolioDashboardComponent implements OnInit {
   private fetchUserInvestments(): void {
     this.stockService.getAllStocks().subscribe({
       next: (stocks) => {
-        console.log(stocks);
-
         this.investments = stocks;
         this.cdr.detectChanges(); // Update view with fetched stocks
       },
       error: (error) => {
-        console.error('Error fetching investments', error);
       }
     });
   }
@@ -89,7 +85,6 @@ export class PortfolioDashboardComponent implements OnInit {
         this.cdr.detectChanges(); // Refresh the list
       },
       error: (error: any) => {
-        console.error('Error adding investment', error);
       }
     });
 
@@ -112,12 +107,10 @@ export class PortfolioDashboardComponent implements OnInit {
           this.cdr.detectChanges(); // Update the view to reflect the changes
         },
         error: (error) => {
-          console.error('Error deleting investment', error);
           // Handle error, maybe show an error message to the user
         }
       });
     } else {
-      console.error('Stock ID is missing');
       // Handle case where stock ID is missing
     }
   }
@@ -126,20 +119,15 @@ export class PortfolioDashboardComponent implements OnInit {
   saveEditing(investment: any, index: number): void {
     investment.editing = false;
 
-    console.log(investment);
-
-
     this.stockService.updateStock(investment.id, { ticker_name: investment.ticker_name, amount_invested: investment.amount_invested })
       .subscribe({
         next: (response) => {
           // Handle successful update
-          console.log('Stock updated successfully', response);
           this.investments[index] = { ...response };
           this.cdr.detectChanges(); // Refresh the list to display updated stock
         },
         error: (error) => {
           // Handle update error
-          console.error('Error updating stock', error);
           // Optionally, revert the changes in the UI or show an error message
           investment.editing = true; // Allow the user to try editing again
         }
