@@ -24,7 +24,9 @@ class Stock(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     ticker_name = models.CharField(max_length=10)
     amount_invested = models.DecimalField(max_digits=10, decimal_places=2)
-    # Add other necessary fields
+
+    def __str__(self):
+        return f"{self.ticker_name} : ${self.amount_invested} - {self.user}"
 
 class NewsSource(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

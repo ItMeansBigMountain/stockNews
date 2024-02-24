@@ -33,6 +33,27 @@ class StockSerializer(serializers.ModelSerializer):
         model = Stock
         fields = '__all__'
 
+    def create(self, validated_data):
+        user = validated_data.get('user')
+        ticker_name = validated_data.get('ticker_name')
+        amount_invested = validated_data.get('amount_invested')
+
+        # Check if the user already has a stock with the same name
+        stock, created = Stock.objects.get_or_create(
+            user=user, 
+            ticker_name=ticker_name,
+            defaults={'amount_invested': amount_invested}
+        )
+
+        # If the stock exists (not created), add the new amount to the existing amount
+        if not created:
+            stock.amount_invested += amount_invested
+            stock.save()
+
+        return stock
+
+
+
 class NewsSourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsSource

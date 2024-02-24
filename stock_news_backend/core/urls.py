@@ -1,4 +1,3 @@
-from rest_framework.routers import DefaultRouter
 from . import views
 
 from django.urls import path, include
@@ -7,15 +6,14 @@ from rest_framework_simplejwt import views as jwt_views
 
 
 
-router = DefaultRouter()
-router.register(r'stocks', views.StockViewSet)
-router.register(r'newssources', views.NewsSourceViewSet)
 
 urlpatterns = [
     path("", lambda request: HttpResponse("Welcome!")),
     
-    # DATABASE 
-    path("api/", include(router.urls)), 
+    # INTERACTION DATABASE 
+    path('api/stocks/', views.StockView.as_view(), name='stock_list'),
+    path('api/stocks/<int:stock_id>/', views.StockView.as_view(), name='stock_detail'),
+    path('api/newssources/', views.NewsSourceViewSet, name='news_sources'),
     
     # JWT USER AUTH
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
