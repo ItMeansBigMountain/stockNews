@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-signup',
@@ -12,7 +13,7 @@ export class LoginSignupComponent {
   password: string = '';
   confirmPassword: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   toggleMode(event: Event): void {
     event.preventDefault();
@@ -23,34 +24,44 @@ export class LoginSignupComponent {
     if (form.invalid) {
       return;
     }
-    // Implement login logic using AuthService
-    // Example: this.authService.login(form.value.email, form.value.password);
+    this.authService.login(form.value.username, form.value.password).subscribe({
+      next: (response) => {
+        // RESPONSE SHOULD CONTAIN AUTH TOKEN
+        console.log('Login successful', response);
+        // Redirect to dashboard
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error) => {
+        console.error('Login failed', error);
+      }
+    });
   }
 
   signup(form: NgForm): void {
-    if (form.invalid || form.value.password !== form.value.confirmPassword) {
-      console.log(form.invalid)
-      console.log(form.value.password)
-      console.log(form.value.confirmPassword)
-      console.log(form.value)
-      console.log("invalid form")
-      return; // Add error handling for unmatched passwords
+    if (form.invalid) {
+      return;
     }
-
     const userData = {
       username: form.value.username,
       email: form.value.email,
-      password: this.password,
+      password: form.value.password,
     };
-
     this.authService.signup(userData).subscribe({
-      next: (response) => {
-        console.log('Signup successful', response);
-        // Handle successful signup, e.g., redirecting the user
+      next: (signup_response) => {
+        this.authService.login(userData.username, userData.password).subscribe({
+          next: (login_response) => {
+            // RESPONSE SHOULD CONTAIN AUTH TOKEN
+            console.log('Login successful', login_response);
+            // Redirect to dashboard
+            this.router.navigate(['/dashboard']);
+          },
+          error: (error) => {
+            console.error('Login failed', error);
+          }
+        });
       },
       error: (error) => {
         console.error('Signup failed', error);
-        // Handle signup error, e.g., displaying an error message
       }
     });
   }
