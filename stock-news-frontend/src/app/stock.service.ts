@@ -35,4 +35,10 @@ export class StockService {
     return this.http.delete(`${this.apiUrl}${stockId}/`, { headers: headers });
   }
 
+  analyzeStocks(stocks: any[]): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = { 'Authorization': `Bearer ${token}` };
+    return this.http.post(`${this.apiUrl}analyze-stocks/`, { stocks }, { headers });
+  }
+
 }

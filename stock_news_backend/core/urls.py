@@ -15,6 +15,8 @@ urlpatterns = [
     path('api/stocks/<int:stock_id>/', views.StockView.as_view(), name='stock_detail'),
     path('api/newssources/', views.NewsSourceViewSet, name='news_sources'),
     
+    path('api/stocks/analyze-stocks/', views.AnalyzeStocksView.as_view(), name='analyze_stocks'),
+
     # JWT USER AUTH
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),

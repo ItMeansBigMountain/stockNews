@@ -17,6 +17,13 @@ export class PortfolioDashboardComponent implements OnInit {
   newInvestmentSymbol: string = '';
   newInvestmentAmount: number = 0;
   investments: any[] = [];
+  isLoading: boolean = false;
+  emotionChartData: any[] = []
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+
+
 
   constructor(
     private stockService: StockService,
@@ -146,4 +153,50 @@ export class PortfolioDashboardComponent implements OnInit {
     this.router.navigate(['/settings']);
   }
 
+  // ANALYSIS METHOD
+  analyzeStocks(): void {
+    this.isLoading = true; // Show spinner
+    console.log(this.investments);
+
+    // Assuming you have a backend API endpoint /api/analyze-stocks
+    this.stockService.analyzeStocks(this.investments).subscribe({
+      next: (analysisResults) => {
+        // Handle analysis results, for example, updating the sentiment for each stock
+
+        this.isLoading = false; // Hide spinner
+        this.investments.forEach((investment, index) => {
+          // Update sentiment based on the analysis
+          investment.analysis_data = analysisResults[index].analysis_data;
+        });
+
+
+        // Refresh the list to display updated sentiments
+        // location.reload()
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        // Hide spinner
+        this.isLoading = false;
+      }
+    });
+
+
+
+
+
+
+
+
+  }
+
+  // Method to convert investment analysis data to chart data
+  generateChartData(investment: any): void {
+    this.emotionChartData = Object.keys(investment.analysis_data.emotions).map(key => {
+      return {
+        name: key,
+        value: investment.analysis_data.emotions[key]
+      };
+    });
+
+  }
 }

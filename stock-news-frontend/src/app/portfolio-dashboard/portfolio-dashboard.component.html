@@ -34,24 +34,53 @@
         <ul>
             <!-- Dynamically generate list items -->
             <li class="investment-item" *ngFor="let investment of investments; let i = index">
-                <button *ngIf="!investment.editing" (click)="enableEditing(investment)">Edit</button>
-                <button *ngIf="investment.editing" (click)="deleteEditing(i)">Delete</button>
-                <button *ngIf="investment.editing" (click)="saveEditing(investment, i)">Save</button>
-                <button *ngIf="investment.editing" (click)="cancelEditing(investment)">Cancel</button>
-                <span class="ticker">{{ investment.ticker_name }}</span>
+                <div class="investment-actions">
+                    <button *ngIf="!investment.editing" (click)="enableEditing(investment)">Edit</button>
+                    <button *ngIf="investment.editing" (click)="deleteEditing(i)">Delete</button>
+                    <button *ngIf="investment.editing" (click)="saveEditing(investment, i)">Save</button>
+                    <button *ngIf="investment.editing" (click)="cancelEditing(investment)">Cancel</button>
+                </div>
+                <div class="investment-details">
+                    <span class="ticker">{{ investment.ticker_name }}</span>
+                    <span *ngIf="!investment.editing" class="amount">${{ investment.amount_invested }}</span>
+                    <input *ngIf="investment.editing" type="number" [(ngModel)]="investment.amount_invested">
+                </div>
+                <div class="investment-analysis">
+                    <span class="sentiment">Sentiment: {{ investment.analysis_data?.sentiment | number:'1.2-2' }}</span>
+                    <div class="emotions">
+                        <span>Sadness: {{ investment.analysis_data?.emotions.sadness | number:'1.2-2' }}</span>
+                        <br>
+                        <span>Joy: {{ investment.analysis_data?.emotions.joy | number:'1.2-2' }}</span>
+                        <br>
+                        <span>Fear: {{ investment.analysis_data?.emotions.fear | number:'1.2-2' }}</span>
+                        <br>
+                        <span>Disgust: {{ investment.analysis_data?.emotions.disgust | number:'1.2-2' }}</span>
+                        <br>
+                        <span>Anger: {{ investment.analysis_data?.emotions.anger | number:'1.2-2' }}</span>
+                    </div>
+                    <!-- Pie chart for emotions
+                    <div *ngIf="investment.analysis_data">
+                        <button (click)="generateChartData(investment)">Show Emotions Chart</button>
+                        <ngx-charts-pie-chart 
+                            [results]="emotionChartData" 
+                            [view]="[700, 400]" 
+                            [scheme]="colorScheme"
+                            [doughnut]="true" 
+                            [gradient]="false"
+                        >
+                        </ngx-charts-pie-chart> -->
 
-                <!-- editable only in edit mode -->
-                <input *ngIf="investment.editing" type="number" [(ngModel)]="investment.amount_invested">
-                <span *ngIf="!investment.editing" class="amount">${{ investment.amount_invested }}</span>
 
-                <span class="sentiment">TBD</span>
+                </div>
             </li>
-
-
-
         </ul>
     </div>
 
 
-    <button class="run-analysis-btn">Run Analysis</button>
+    <!-- ANALYSIS BUTTON -->
+    <button class="run-analysis-btn" (click)="analyzeStocks()">Run Analysis</button>
+
+    <!-- Spinner Icon -->
+    <div *ngIf="isLoading" class="loader"></div>
+
 </div>

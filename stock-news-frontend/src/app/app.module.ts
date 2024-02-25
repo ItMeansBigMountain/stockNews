@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { RouterOutlet } from '@angular/router';
         SettingsComponent,
         // CommonModule, 
         // RouterOutlet
+        
     ],
     imports: [
         NgFor,
@@ -30,7 +33,8 @@ import { RouterOutlet } from '@angular/router';
         FormsModule,
         BrowserModule,
         HttpClientModule,
-        RouterModule.forRoot(routes)
+        RouterModule.forRoot(routes),
+        NgxChartsModule
     ],
     providers: [],
     bootstrap: [AppComponent]

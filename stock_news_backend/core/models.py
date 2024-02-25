@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
+
+
 class CustomUser(AbstractUser):
     groups = models.ManyToManyField(
         Group,
@@ -20,13 +22,18 @@ class CustomUser(AbstractUser):
         related_query_name="user",
     )
 
+
 class Stock(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     ticker_name = models.CharField(max_length=10)
     amount_invested = models.DecimalField(max_digits=10, decimal_places=2)
+    analysis_data = models.JSONField(null=True, blank=True)
+    last_analysis_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.ticker_name} : ${self.amount_invested} - {self.user}"
+
+
 
 class NewsSource(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

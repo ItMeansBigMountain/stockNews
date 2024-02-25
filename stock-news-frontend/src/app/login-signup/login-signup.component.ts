@@ -26,12 +26,10 @@ export class LoginSignupComponent {
     }
     this.authService.login(form.value.username, form.value.password).subscribe({
       next: (response: any) => {
-        console.log('Login successful', response);
         this.authService.saveToken(response.access);
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
-        console.error('Login failed', error);
       }
     });
   }
@@ -52,7 +50,6 @@ export class LoginSignupComponent {
         this.login(form)
       },
       error: (error) => {
-        console.error('Signup failed', error);
       }
     });
   }
