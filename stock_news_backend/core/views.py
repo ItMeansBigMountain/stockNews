@@ -151,7 +151,7 @@ class AnalyzeStocksView(APIView):
             count = 0
             for news_article_json in data["articles"]:
                 count += 1
-                print(F"{request.user}\'s Article: {news_article_json.get('title')} - {count}")
+                print(F"{request.user}\'s {topic} Article: {news_article_json.get('title')} - {count}")
 
                 debug = news_article_json.get("title") + "\n" + news_article_json.get("content")
                 nlu = watson.analyzeText(client, debug)
@@ -161,10 +161,6 @@ class AnalyzeStocksView(APIView):
                     analysis_results[topic].append(news_article_json)
                 else:
                     analysis_results[topic] = [news_article_json]
-
-                # debug
-                # if count >= 5:
-                #     break
 
         # AVERAGE OUT THE ANALYSIS LIST
         average_scores = {}
@@ -181,7 +177,7 @@ class AnalyzeStocksView(APIView):
                 # print("\n\n\n")
                 # print(nlu)
                 # print("\n\n\n")
-                if "emotion" not in nlu.get("warnings"):
+                if "warnings" not in nlu.keys():
                     for emotion, score in nlu['emotion']['document']['emotion'].items():
                         emotion_totals[emotion] += score
                 else:
