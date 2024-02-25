@@ -166,26 +166,30 @@ class AnalyzeStocksView(APIView):
                 # if count >= 5:
                 #     break
 
-        # Initialize a dictionary to hold average scores for each stock
+        # AVERAGE OUT THE ANALYSIS LIST
         average_scores = {}
-
-        # Process each stock
         for stock, articles in analysis_results.items():
-            # Initialize variables to accumulate scores
             sentiment_total = 0
             emotion_totals = {'sadness': 0, 'joy': 0, 'fear': 0, 'disgust': 0, 'anger': 0}
-            article_count = len(articles)
-
+            sentiment_count = len(articles)
+            emotion_count = len(articles)
+            
             # Process each article
             for article in articles:
                 nlu = json.loads(article['nlu'])
                 sentiment_total += nlu['sentiment']['document']['score']
-                for emotion, score in nlu['emotion']['document']['emotion'].items():
-                    emotion_totals[emotion] += score
+                # print("\n\n\n")
+                # print(nlu)
+                # print("\n\n\n")
+                if "emotion" not in nlu.get("warnings"):
+                    for emotion, score in nlu['emotion']['document']['emotion'].items():
+                        emotion_totals[emotion] += score
+                else:
+                    emotion_count -= 1
 
             # Calculate averages
-            average_sentiment = sentiment_total / article_count
-            average_emotions = {emotion: total / article_count for emotion, total in emotion_totals.items()}
+            average_sentiment = sentiment_total / sentiment_count
+            average_emotions = {emotion: total / emotion_count for emotion, total in emotion_totals.items()}
             
             # Store the averages
             average_scores[stock] = {'sentiment': average_sentiment, 'emotions': average_emotions}
