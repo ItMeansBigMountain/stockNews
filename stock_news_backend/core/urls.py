@@ -22,4 +22,8 @@ urlpatterns = [
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('api/signup/', views.CreateUserView.as_view(), name='create_user'),
     path('api/user/', views.CurrentUserView.as_view(), name='current_user'),
+
+    # BROKER PLATFORM INTEGRATION
+    path('api/robinhood-import', views.RobinhoodImportView.as_view(), name='robinhood-import'),
+
 ]

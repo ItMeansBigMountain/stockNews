@@ -19,6 +19,36 @@
             </div>
         </div>
 
+
+        <!-- Robinhood Integration -->
+        <div class="robinhood-integration">
+
+            <button class="update-investments-btn" (click)="toggleMode($event)">
+                Update Investments from Robinhood
+            </button>
+
+            <form (ngSubmit)="updateInvestmentsFromRobinhood(f)" #f="ngForm" *ngIf="robinHoodLogin">
+
+                <!-- Robinhood Email -->
+                <div class="form-group">
+                    <label for="email">Robinhood Email:</label>
+                    <input type="email" id="email" name="email">
+                </div>
+
+                <!-- Robinhood Password -->
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password">
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit">Import</button>
+
+            </form>
+        </div>
+
+
+
         <!-- Save Button -->
         <button type="submit" class="save-settings-btn">Save Settings</button>
     </form>

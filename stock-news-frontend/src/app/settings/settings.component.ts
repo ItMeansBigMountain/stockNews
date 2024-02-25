@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { BrokerIntegrationService } from '../broker-integration.service';
+import { NgForm } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-settings',
@@ -11,9 +15,12 @@ import { Router } from '@angular/router';
 
 
 export class SettingsComponent {
-  // Add properties to bind to your form elements if needed
+  robinHoodLogin = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private brokerService: BrokerIntegrationService
+  ) { }
 
   saveSettings() {
     // Implement saving logic here
@@ -21,6 +28,30 @@ export class SettingsComponent {
   }
 
   goBackToDashboard() {
-    this.router.navigate(['/dashboard']); 
+    this.router.navigate(['/dashboard']);
+  }
+
+
+
+  // BROKER INTEGRATION
+
+  toggleMode(event: Event): void {
+    event.preventDefault();
+    this.robinHoodLogin = !this.robinHoodLogin;
+  }
+
+
+  updateInvestmentsFromRobinhood(userData: NgForm) {
+    
+    this.brokerService.importFromRobinhood(userData).subscribe({
+      next: (response) => {
+        console.log('Investments updated successfully', response);
+        // You can add logic here to inform the user of a successful update or to update the UI accordingly
+      },
+      error: (error) => {
+        console.error('Error updating investments', error);
+        // Handle any errors here, such as displaying an error message to the user
+      }
+    });
   }
 }

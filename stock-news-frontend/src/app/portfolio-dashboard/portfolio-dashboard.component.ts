@@ -156,7 +156,6 @@ export class PortfolioDashboardComponent implements OnInit {
   // ANALYSIS METHOD
   analyzeStocks(): void {
     this.isLoading = true; // Show spinner
-    console.log(this.investments);
 
     // Assuming you have a backend API endpoint /api/analyze-stocks
     this.stockService.analyzeStocks(this.investments).subscribe({
@@ -190,13 +189,13 @@ export class PortfolioDashboardComponent implements OnInit {
   }
 
   // Method to convert investment analysis data to chart data
-  generateChartData(investment: any): void {
-    this.emotionChartData = Object.keys(investment.analysis_data.emotions).map(key => {
-      return {
-        name: key,
-        value: investment.analysis_data.emotions[key]
-      };
-    });
+  // generateChartData(investment: any): void {
+  //   this.emotionChartData = Object.keys(investment.analysis_data.emotions).map(key => {
+  //     return {
+  //       name: key,
+  //       value: investment.analysis_data.emotions[key]
+  //     };
+  //   });
 
-  }
+  // }
 }

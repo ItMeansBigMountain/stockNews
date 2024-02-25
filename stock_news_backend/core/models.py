@@ -22,6 +22,10 @@ class CustomUser(AbstractUser):
         related_query_name="user",
     )
 
+    equity = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    cash = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    dividend_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
 
 class Stock(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
