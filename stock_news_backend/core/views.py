@@ -111,9 +111,6 @@ class CurrentUserView(APIView):
         # Return the serialized user data
         return Response(serializer.data)
 
-
-
-
 class AnalyzeStocksView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -214,15 +211,12 @@ class AnalyzeStocksView(APIView):
         # return Response(average_scores)
         return Response(serializer.data)
 
-
-
 class RobinhoodImportView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
         # RobinHood Login
-        robin.logout()
         username = request.data.get("username")
         password = request.data.get("password")
         robin.login(username=username, password=password, expiresIn=3600, store_session=False)
@@ -247,5 +241,8 @@ class RobinhoodImportView(APIView):
         user.cash = float(user_robinhood_account.get("cash", 0))
         user.dividend_total = float(user_robinhood_account.get("dividend_total", 0))
         user.save()
+
+        # LOGOUT OF ROBIN HOOD
+        robin.logout()
         
         return Response({'message': 'Stocks imported successfully'}, status=status.HTTP_200_OK)
