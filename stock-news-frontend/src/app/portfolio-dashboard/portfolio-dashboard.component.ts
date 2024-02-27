@@ -19,9 +19,12 @@ export class PortfolioDashboardComponent implements OnInit {
   investments: any[] = [];
   isLoading: boolean = false;
   emotionChartData: any[] = []
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
+  
+  colorScheme: any = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#FF7F0E']
+};
+
+
 
 
 
@@ -178,24 +181,12 @@ export class PortfolioDashboardComponent implements OnInit {
         this.isLoading = false;
       }
     });
-
-
-
-
-
-
-
-
   }
 
-  // Method to convert investment analysis data to chart data
-  // generateChartData(investment: any): void {
-  //   this.emotionChartData = Object.keys(investment.analysis_data.emotions).map(key => {
-  //     return {
-  //       name: key,
-  //       value: investment.analysis_data.emotions[key]
-  //     };
-  //   });
-
-  // }
+  formatEmotions(emotions: any): any[] {
+    return Object.keys(emotions).map(key => ({
+      name: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the first letter
+      value: emotions[key]
+    }));
+  }
 }

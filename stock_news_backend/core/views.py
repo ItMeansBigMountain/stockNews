@@ -117,11 +117,11 @@ class AnalyzeStocksView(APIView):
     def post(self, request):
         # https://newsapi.org/v2/everything?q=bitcoin&from=2022-09-01&to=2022-09-10&sortBy=publishedAt&apiKey=790450dc81754535b73030ac37a0427b
 
+        # https://api.thenewsapi.com/v1/news/all?api_token=YOUR_API_TOKEN&search=bitcoin&from=2023-01-01&to=2023-02-01
+
         # https://gnews.io/api/v4/search?q=bitcoin&from=2022-09-01T00:00:00Z&to=2022-09-10T23:59:59Z&token=YOUR_API_KEY
 
         # https://api.currentsapi.services/v1/search?keywords=bitcoin&start_date=2022-09-01&end_date=2022-09-10&apiKey=YOUR_API_KEY
-
-        # https://api.thenewsapi.com/v1/news/all?api_token=YOUR_API_TOKEN&search=bitcoin&from=2023-01-01&to=2023-02-01
 
         # http://api.mediastack.com/v1/news?access_key=YOUR_ACCESS_KEY&keywords=bitcoin&languages=en&date=2023-01-01,2023-02-01
 

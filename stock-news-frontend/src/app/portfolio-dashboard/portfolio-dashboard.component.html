@@ -5,16 +5,20 @@
     <!-- LOGOUT BUTTON -->
     <button class="logout-btn" (click)="logout()">Logout</button>
 
+
+    <!-- EMOTIONS LEGEND -->
+    
+
+
     <!-- TITLE -->
-    <h2>{{ userData.username }}'s Portfolio Dashboard</h2>
+    <!-- <h2>{{ userData.username }}'s Portfolio Dashboard</h2>
     <h4>Equity: ${{ userData.equity }}</h4>
     <h4>Cash: ${{ userData.cash }}</h4>
     <h4>Dividend_total: ${{ userData.dividend_total }}</h4>
-
-    
+     -->
 
     <!-- TIMEFRAME SELECTOR -->
-    <div class="timeframe-selector">
+    <!-- <div class="timeframe-selector">
         <div class="timeframe">
             <label for="timeframeFrom">From:</label>
             <input type="date" id="timeframeFrom" name="timeframeFrom" [value]="fromDate">
@@ -23,7 +27,7 @@
             <label for="timeframeTo">To:</label>
             <input type="date" id="timeframeTo" name="timeframeTo" [value]="toDate">
         </div>
-    </div>
+    </div> -->
 
     <!-- ADD INVESTMENT BUTTON  -->
     <div class="add-investment">
@@ -31,7 +35,6 @@
         <input type="number" placeholder="Amount Invested" [(ngModel)]="newInvestmentAmount">
         <button (click)="addInvestment()">Add Investment</button>
     </div>
-
 
 
     <div class="investment-list">
@@ -50,32 +53,14 @@
                     <span *ngIf="!investment.editing" class="amount">${{ investment.amount_invested }}</span>
                     <input *ngIf="investment.editing" type="number" [(ngModel)]="investment.amount_invested">
                 </div>
+
                 <div class="investment-analysis">
                     <span class="sentiment">Sentiment: {{ investment.analysis_data?.sentiment | number:'1.2-2' }}</span>
-                    <div class="emotions">
-                        <span>Sadness: {{ investment.analysis_data?.emotions.sadness | number:'1.2-2' }}</span>
-                        <br>
-                        <span>Joy: {{ investment.analysis_data?.emotions.joy | number:'1.2-2' }}</span>
-                        <br>
-                        <span>Fear: {{ investment.analysis_data?.emotions.fear | number:'1.2-2' }}</span>
-                        <br>
-                        <span>Disgust: {{ investment.analysis_data?.emotions.disgust | number:'1.2-2' }}</span>
-                        <br>
-                        <span>Anger: {{ investment.analysis_data?.emotions.anger | number:'1.2-2' }}</span>
-                    </div>
-                    <!-- Pie chart for emotions
-                    <div *ngIf="investment.analysis_data">
-                        <button (click)="generateChartData(investment)">Show Emotions Chart</button>
-                        <ngx-charts-pie-chart 
-                            [results]="emotionChartData" 
-                            [view]="[700, 400]" 
-                            [scheme]="colorScheme"
-                            [doughnut]="true" 
-                            [gradient]="false"
-                        >
-                        </ngx-charts-pie-chart> -->
-
-
+                    <!-- Pie chart for emotions -->
+                    <ngx-charts-pie-chart *ngIf="investment.analysis_data" [view]="[100, 100]" [scheme]="colorScheme"
+                        [results]="formatEmotions(investment.analysis_data?.emotions)" [doughnut]="true"
+                        [gradient]="false">
+                    </ngx-charts-pie-chart>
                 </div>
             </li>
         </ul>
