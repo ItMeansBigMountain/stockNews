@@ -151,13 +151,15 @@ class AnalyzeStocksView(APIView):
                 print(F"{request.user}\'s {topic} Article: {news_article_json.get('title')} - {count}")
 
                 debug = news_article_json.get("title") + "\n" + news_article_json.get("content")
-                nlu = watson.analyzeText(client, debug)
-
-                news_article_json["nlu"] = nlu
-                if analysis_results.get(topic):
-                    analysis_results[topic].append(news_article_json)
-                else:
-                    analysis_results[topic] = [news_article_json]
+                try:
+                    nlu = watson.analyzeText(client, debug)
+                    news_article_json["nlu"] = nlu
+                    if analysis_results.get(topic):
+                        analysis_results[topic].append(news_article_json)
+                    else:
+                        analysis_results[topic] = [news_article_json]
+                except Exception as e:
+                    print(F"{request.user}\'s {topic} ERROR: {e} - {count}")
 
         # AVERAGE OUT THE ANALYSIS LIST
         average_scores = {}
@@ -169,16 +171,16 @@ class AnalyzeStocksView(APIView):
             
             # Process each article
             for article in articles:
-                nlu = json.loads(article['nlu'])
-                sentiment_total += nlu['sentiment']['document']['score']
-                # print("\n\n\n")
-                # print(nlu)
-                # print("\n\n\n")
-                if "warnings" not in nlu.keys():
-                    for emotion, score in nlu['emotion']['document']['emotion'].items():
-                        emotion_totals[emotion] += score
-                else:
-                    emotion_count -= 1
+                    nlu = json.loads(article['nlu'])
+                    sentiment_total += nlu['sentiment']['document']['score']
+                    # print("\n\n\n")
+                    # print(nlu)
+                    # print("\n\n\n")
+                    if "warnings" not in nlu.keys():
+                        for emotion, score in nlu['emotion']['document']['emotion'].items():
+                            emotion_totals[emotion] += score
+                    else:
+                        emotion_count -= 1
 
             # Calculate averages
             average_sentiment = sentiment_total / sentiment_count
