@@ -6,8 +6,11 @@ from ibm_watson.natural_language_understanding_v1 import Features, EntitiesOptio
 import configparser
 
 # SECRETS
+import os
 config = configparser.ConfigParser()
-config.read('secrets.ini')
+thisfolder = os.path.dirname(os.path.abspath(__file__))
+initfile = os.path.join(thisfolder, 'secrets.ini')
+config.read(initfile)
 
 
 def login():
