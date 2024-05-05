@@ -19,12 +19,16 @@ export class BrokerIntegrationService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    const data = {
-      testing : "this"
-    }
-    console.log(userData.value);
 
-    return this.http.post(`${this.apiUrl}/robinhood-import`, data, { headers: headers });
+    const additionalData = {
+      // testing: "this"
+      // Add more key-value pairs as needed
+    };
+    const mergedData = { ...userData.value, ...additionalData };
+
+
+
+    return this.http.post(`${this.apiUrl}/robinhood-import`, mergedData, { headers: headers });
   }
 
 

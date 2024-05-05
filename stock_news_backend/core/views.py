@@ -219,8 +219,8 @@ class RobinhoodImportView(APIView):
     def post(self, request):
         print(request.data)
         # Get username and password from request data
-        username = request.data.get("username")
-        password = request.data.get("password")
+        username = request.data.get("rsn")
+        password = request.data.get("rpw")
 
         # Login to Robinhood
         with robin_login(username, password) as robin:
