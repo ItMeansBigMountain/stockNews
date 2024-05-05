@@ -19,10 +19,10 @@ export class PortfolioDashboardComponent implements OnInit {
   investments: any[] = [];
   isLoading: boolean = false;
   emotionChartData: any[] = []
-  
+
   colorScheme: any = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#FF7F0E']
-};
+  };
 
 
 
@@ -36,7 +36,7 @@ export class PortfolioDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.checkUserToken();
+    // this.checkUserToken();
     this.initializeDateRange();
     this.fetchUserInvestments();
   }

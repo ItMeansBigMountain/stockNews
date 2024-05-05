@@ -42,7 +42,6 @@ export class SettingsComponent {
 
 
   updateInvestmentsFromRobinhood(userData: NgForm) {
-    
     this.brokerService.importFromRobinhood(userData).subscribe({
       next: (response) => {
         console.log('Investments updated successfully', response);

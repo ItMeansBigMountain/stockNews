@@ -13,18 +13,18 @@ export class BrokerIntegrationService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   // Method to import stock data from Robinhood
-  importFromRobinhood(userData : any): Observable<any> {
+  importFromRobinhood(userData: any): Observable<any> {
     const token = this.authService.getToken(); // Assumes you have a method to get the stored token
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` 
+      'Authorization': `Bearer ${token}`
     });
+    const data = {
+      testing : "this"
+    }
+    console.log(userData.value);
 
-    // const data - {
-
-    // }
-    
-    return this.http.post(`${this.apiUrl}/robinhood-import`, userData.value, { headers: headers });
+    return this.http.post(`${this.apiUrl}/robinhood-import`, data, { headers: headers });
   }
 
 

@@ -16,7 +16,7 @@ from django.utils import timezone
 
 # BROKER INTEGRATION
 import robin_stocks.robinhood as robin
-
+from contextlib import contextmanager
 
 
 # SECRETS
@@ -217,34 +217,42 @@ class RobinhoodImportView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-
-        # RobinHood Login
+        print(request.data)
+        # Get username and password from request data
         username = request.data.get("username")
         password = request.data.get("password")
-        robin.login(username=username, password=password, expiresIn=3600, store_session=False)
 
-        # ACCOUNT DETAILS
-        user_robinhood_account = robin.build_user_profile()
-        user_robinhood_stocks  = robin.build_holdings(with_dividends=True)
+        # Login to Robinhood
+        with robin_login(username, password) as robin:
+            if not robin:
+                return Response({'error': 'Failed to login to Robinhood'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # print(user_robinhood_account)
-        # print(user_robinhood_stocks)
+            # Fetch user account details
+            user_robinhood_account = robin.build_user_profile()
+            user_robinhood_stocks = robin.build_holdings(with_dividends=True)
 
-        for stock , data in user_robinhood_stocks:
-            stock_serializer = StockSerializer(data=data)
-            if stock_serializer.is_valid():
-                stock_serializer.save(user=request.user)
-            else:
-                return Response(stock_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-        # UPDATE USER INFORMATION
-        user = request.user 
-        user.equity = float(user_robinhood_account.get("equity", 0))
-        user.cash = float(user_robinhood_account.get("cash", 0))
-        user.dividend_total = float(user_robinhood_account.get("dividend_total", 0))
-        user.save()
+            for stock, data in user_robinhood_stocks.items():
+                stock_serializer = StockSerializer(data=data)
+                if stock_serializer.is_valid():
+                    stock_serializer.save(user=request.user)
+                else:
+                    return Response(stock_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # LOGOUT OF ROBIN HOOD
-        robin.logout()
-        
+            # Update user information
+            user = request.user 
+            user.equity = float(user_robinhood_account.get("equity", 0))
+            user.cash = float(user_robinhood_account.get("cash", 0))
+            user.dividend_total = float(user_robinhood_account.get("dividend_total", 0))
+            user.save()
+
         return Response({'message': 'Stocks imported successfully'}, status=status.HTTP_200_OK)
+
+
+
+@contextmanager
+def robin_login(username, password):
+    try:
+        robin.login(username=username, password=password, expiresIn=3600, store_session=False)
+        yield robin
+    finally:
+        robin.logout()
