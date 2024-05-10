@@ -148,12 +148,19 @@ class AnalyzeStocksView(APIView):
             count = 0
             for news_article_json in data["articles"]:
                 count += 1
+
+                # CHECK IF NEWS ARTICLE IS RELEVANT OR NOT
+                if topic.lower() not in  news_article_json.get("title").lower() or topic.lower() not in  news_article_json.get("content").lower():
+                    print(F"{request.user}\'s {topic} Article: NOT RELEVANT - {count}")
+                    continue
+
                 print(F"{request.user}\'s {topic} Article: {news_article_json.get('title')} - {count}")
 
                 debug = news_article_json.get("title") + "\n" + news_article_json.get("content")
                 try:
                     nlu = watson.analyzeText(client, debug)
                     news_article_json["nlu"] = nlu
+                    # CREATE OR UPDATE OUTPUT JSON
                     if analysis_results.get(topic):
                         analysis_results[topic].append(news_article_json)
                     else:
